@@ -147,7 +147,6 @@ reviewsRouter.delete(
       );
       if (index !== -1) {
         const outDatedProduct = products[index];
-        console.log(outDatedProduct);
         const reviews = products[index].reviews;
         const reviewIndex = reviews.findIndex(
           (review) => review._id === req.params.reviewId
@@ -161,24 +160,17 @@ reviewsRouter.delete(
             updatedAt: new Date(),
           };
           reviews[reviewIndex] = updateReview;
+          const updatedProduct = {
+            ...outDatedProduct,
+            reviews: { ...updateReview },
+          };
+          products[index] = updatedProduct;
+          console.log(updatedProduct);
+          await writeProducts(products);
+          res.status(200).send(updatedProduct);
+          //   console.log(products[0]);
         }
-        const updatedProduct = {
-          ...outDatedProduct,
-          reviews: { ...updateReview },
-        };
-        console.log(updatedProduct);
-
-        products[index] = updatedProduct;
-        await writeProducts(products);
-        res.status(200).send(updatedProduct);
-
-        //see
-        const remainingReviews = reviews.filter(
-          (review) => review._id !== req.params.reviewId
-        );
-
-        //   reviews.length !== remainingReviews
-        //     ? (await writeProducts(remainingReviews), res.status(204).send()): next(NotFound(`Review with id ${req.params.reviewId} not found`));
+        // console.log(updatedProduct);
       }
     } catch (error) {
       next(error);
