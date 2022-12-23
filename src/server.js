@@ -9,6 +9,7 @@ import {
   genericErrorHandler,
 } from "./lib/errorHandler.js";
 import filesRouter from "./api/files/index.js";
+import reviewsRouter from "./api/reviews/index.js";
 
 const publicFolderPath = join(process.cwd());
 
@@ -18,7 +19,8 @@ const server = express();
 server.use(express.json());
 server.use(express.static(publicFolderPath));
 server.use("/products", productsRouter);
-server.use("/products", filesRouter);
+server.use("/product", filesRouter);
+server.use("/products", reviewsRouter);
 server.use(badRequestHandler);
 server.use(notFoundHandler);
 server.use(unauthorizedHandler);

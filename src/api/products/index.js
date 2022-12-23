@@ -34,6 +34,7 @@ productsRouter.post(
       const newProduct = {
         ...req.body,
         createdAt: new Date(),
+        updatedAt: new Date(),
         _id: uniqid(),
       };
       products.push(newProduct);
