@@ -41,14 +41,17 @@ reviewsRouter.put(
       );
       if (index !== -1) {
         const outDatedProduct = products[index];
-
+        // const reviewArray = [];
+        const reviewArray = outDatedProduct.reviews;
+        reviewArray.push(newReview);
         const updatedProduct = {
           ...outDatedProduct,
-          reviews: [
-            {
-              ...newReview,
-            },
-          ],
+          //   reviews: [
+          //     {
+          //       ...newReview,
+          //     },
+          //   ],
+          reviews: reviewArray,
         };
         console.log(updatedProduct);
 
