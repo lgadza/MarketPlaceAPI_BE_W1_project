@@ -1,27 +1,20 @@
 import { checkSchema, validationResult } from "express-validator";
 import createHttpError from "http-errors";
-const productSchema = {
+const reviewSchema = {
   comment: {
     in: ["body"],
     isString: {
       errorMessage: "comment is a mandatory field",
     },
   },
-
-  price: {
-    in: ["body"],
-    isInt: {
-      errorMessage: "price is a mandatory field",
-    },
-  },
-  category: {
+  productId: {
     in: ["body"],
     isString: {
-      errorMessage: "category is a mandatery field",
+      errorMessage: "productId is a mandatory field",
     },
   },
 };
-export const checkProductSchema = checkSchema(productSchema);
+export const checkReviewSchema = checkSchema(reviewSchema);
 export const triggerBadRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
