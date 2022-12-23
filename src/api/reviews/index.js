@@ -126,6 +126,7 @@ reviewsRouter.get(
         const foundReview = foundProduct.reviews.find(
           (review) => review._id === req.params.reviewId
         );
+        console.log(products);
         foundReview
           ? res.send(foundReview)
           : next(NotFound(`Review with id ${req.params.reviewId} not found`));
@@ -136,20 +137,49 @@ reviewsRouter.get(
   }
 );
 reviewsRouter.delete(
-  "/:reviewId",
+  "/:productId/reviews/:reviewId",
 
   async (req, res, next) => {
     try {
       const products = await getProducts();
-      const remainingProducts = products.filter(
-        (product) => product._id !== req.params.reviewId
+      const index = products.findIndex(
+        (product) => product._id === req.params.productId
       );
-      const foundReview = reviews.find(
-        (product) => product._id === req.params.reviewId
-      );
-      reviews.length !== remainingReviews
-        ? (await writeReviews(remainingReviews), res.status(204).send())
-        : next(NotFound(`Review with id ${req.params.reviewId} not found`));
+      if (index !== -1) {
+        const outDatedProduct = products[index];
+        console.log(outDatedProduct);
+        const reviews = products[index].reviews;
+        const reviewIndex = reviews.findIndex(
+          (review) => review._id === req.params.reviewId
+        );
+        if (reviewIndex !== -1) {
+          const outDatedReview = reviews[reviewIndex];
+          const updateReview = {
+            ...outDatedReview,
+            ...req.body,
+
+            updatedAt: new Date(),
+          };
+          reviews[reviewIndex] = updateReview;
+        }
+        const updatedProduct = {
+          ...outDatedProduct,
+          reviews: { ...updateReview },
+        };
+        console.log(updatedProduct);
+
+        products[index] = updatedProduct;
+        await writeProducts(products);
+        res.status(200).send(updatedProduct);
+
+        //see
+        const remainingReviews = reviews.filter(
+          (review) => review._id !== req.params.reviewId
+        );
+
+        //   reviews.length !== remainingReviews
+        //     ? (await writeProducts(remainingReviews), res.status(204).send()): next(NotFound(`Review with id ${req.params.reviewId} not found`));
+      }
     } catch (error) {
       next(error);
     }

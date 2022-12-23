@@ -115,9 +115,7 @@ productsRouter.delete(
       const remainingProducts = products.filter(
         (product) => product._id !== req.params.productId
       );
-      const foundProduct = products.find(
-        (product) => product._id === req.params.productId
-      );
+
       products.length !== remainingProducts
         ? (await writeProducts(remainingProducts), res.status(204).send())
         : next(NotFound(`Product with id ${req.params.productId} not found`));
