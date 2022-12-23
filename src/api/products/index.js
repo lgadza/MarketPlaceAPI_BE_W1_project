@@ -16,9 +16,9 @@ const productJSONPath = join(
   "products.json"
 );
 const publicFolderPath = join(process.cwd(), "./public/img/products");
-const getProducts = () => readJSON(productJSONPath);
-const writeProducts = (products) => writeJSON(productJSONPath, products);
-const saveImgCover = () => (fileName, content) =>
+export const getProducts = () => readJSON(productJSONPath);
+export const writeProducts = (products) => writeJSON(productJSONPath, products);
+export const saveImgCover = (fileName, content) =>
   writeFile(join(publicFolderPath, fileName), content);
 const productsRouter = express.Router();
 
