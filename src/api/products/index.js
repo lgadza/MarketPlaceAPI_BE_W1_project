@@ -53,7 +53,6 @@ productsRouter.put(
       console.log(req.body);
       const products = await getProducts();
 
-      // const outDatedProduct= products.find(product => product._id === req.params.productId)
       const index = products.findIndex(
         (product) => product._id === req.params.productId
       );
